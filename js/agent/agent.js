@@ -1,6 +1,14 @@
-function Agent(GameManager, size, KeyboardInputManager, HTMLActuator, LocalStorageManager)
+/*
+ * Class describing the high-level operations of the
+ * 2048 Agent. Interfaces with the AgentControls class
+ * in order to receive user input and with the
+ * SearchAlgorithm classes to choose moves. Exacts output
+ * via the pre-existing GameManager class.
+ */
+
+function Agent(gameManager)
 {
-    this.gameManager = new GameManager(size, KeyboardInputManager, HTMLActuator, LocalStorageManager);
+    this.gameManager = gameManager;
     this.agentControls = new AgentControls;
 
     this.agentControls.bindToPlay(this.doOneMove.bind(this));
