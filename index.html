@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>2048</title>
+  <title>2048 Agent</title>
 
   <link href="style/main.css" rel="stylesheet" type="text/css">
   <link rel="shortcut icon" href="favicon.ico">
@@ -19,7 +19,7 @@
 <body>
   <div class="container">
     <div class="heading">
-      <h1 class="title">2048</h1>
+      <h1 class="title">2048 Agent</h1>
       <div class="scores-container">
         <div class="score-container">0</div>
         <div class="best-container">0</div>
@@ -29,6 +29,35 @@
     <div class="above-game">
       <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
       <a class="restart-button">New Game</a>
+
+      <!-- Controls for the Agent -->
+      <div id="agent-controls-area">
+
+        <label for="agent-algorithm">Search Algorithm:</label>
+        <select id="agent-algorithm">
+          <option value="random">Random Choice</option>
+          <option value="minimax">Minimax</option>
+          <option value="expectimax">Expectimax</option>
+        </select>
+        <br>
+
+        <label for="agent-depth">Search Depth</label>
+        <input id="agent-depth" type="range" min="1" max="10">
+        <br>
+
+        <p>Search Heuristics</p>
+        <label for="ah-score">Score</label>
+        <input id="ah-score" type="checkbox">
+        <label for="ah-monotonicity">Monotonicity</label>
+        <input id="ah-monotonicity" type="checkbox">
+        <label for="ah-free-spaces">Free Spaces</label>
+        <input id="ah-free-spaces" type="checkbox">
+
+        <input id="agent-play" type="button" value="Play">
+
+      </div>
+      <!-- End of controls -->
+
     </div>
 
     <div class="game-container">
@@ -95,5 +124,11 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
+
+  <!-- Agent scripts -->
+  <script src="js/agent/agent.js"></script>
+  <script src="js/agent/agent_controls.js"></script>
+  <!-- End agent scripts -->
+
 </body>
 </html>
