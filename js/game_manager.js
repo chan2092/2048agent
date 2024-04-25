@@ -186,11 +186,6 @@ GameManager.prototype.move = function (direction) {
       this.over = true; // Game over!
     }
 
-    //TODO remove
-    console.log("Heuristics:\nScore: " + this.grid.h_score() +
-                "\nMonotonicity: " + this.grid.h_monotonicity() +
-                "\nFree Spaces: " + this.grid.h_free_spaces());
-
     this.actuate();
   }
 };
