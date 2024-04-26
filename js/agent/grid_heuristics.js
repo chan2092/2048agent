@@ -3,6 +3,12 @@
  * Heuristics (h_*()) are described here.
  */
 
+// Combination of all heuristics
+Grid.prototype.h_total = function()
+{
+    return this.h_free_spaces() + this.h_score() + this.h_monotonicity();
+}
+
 // Encodes percentage of spaces on board free
 Grid.prototype.h_free_spaces = function()
 {
@@ -23,13 +29,12 @@ Grid.prototype.h_score = function()
             var cell = this.cellContent({x: row, y: col});
             if (!!cell) {
                 var value = cell.value;
-                console.log(value);
                 score += value * (Math.log2(value) - 1);
             }
         }
     }
     
-    return score;
+    return score / 4096;
 };
 
 // Encodes quality of value gradient present on board

@@ -16,22 +16,24 @@ function Agent(gameManager)
 
     // set the functionality of the play button
     this.agentControls.bindToPlay(this.doOneMove.bind(this));
-    
+
     //this.execute();
 }
 
 Agent.prototype.doOneMove = function ()
 {
-    /*
     var moveChoice = this.chooseMove();
     this.gameManager.move(moveChoice);
-    */
 
     // TODO
-    this.gameManager.grid.generateSuccessors()
+    /*this.gameManager.grid.generateSuccessors()
         .forEach((s) => {
-            console.log(s.serialize());
-        });
+            var map = { 0:"Up", 1:"Right", 2:"Down", 3:"Left" };
+            console.log("Move in " + map[s.direction] + " direction gives these scores:"
+                + "\nfree spaces: " + s.h_free_spaces()
+                + "\nscore: " + s.h_score()
+                + "\nmonotonicity: " + s.h_monotonicity());
+        });*/
 };
 
 Agent.prototype.chooseMove = function ()
@@ -51,8 +53,9 @@ Agent.prototype.chooseMove = function ()
 
 Agent.prototype.chooseMinimaxMove = function()
 {
-    // TODO
-    return 0;
+    var depth = this.agentControls.depth();
+    console.log("choosing minimax move with depth " + depth);
+    return minimax(this.gameManager.grid, depth);
 };
 
 Agent.prototype.chooseExpectimaxMove = function()
