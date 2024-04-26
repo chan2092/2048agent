@@ -11,8 +11,10 @@ function AgentControls()
     this.h_monotonicity_input = document.getElementById("ah-monotonicity");
     this.h_free_spaces_input = document.getElementById("ah-free-spaces");
 
-    // play button
+    // play buttons
+    this.play_one_input = document.getElementById("agent-play-one");
     this.play_input = document.getElementById("agent-play");
+    this.pause_input = document.getElementById("agent-pause");
 }
 
 AgentControls.prototype.algorithm = function()
@@ -36,8 +38,20 @@ AgentControls.prototype.heuristics = function()
     return h_list;
 };
 
+AgentControls.prototype.bindToPlayOne = function(fn)
+{
+    this.play_one_input.addEventListener("click", fn);
+    this.play_one_input.addEventListener("touchend", fn);
+};
+
 AgentControls.prototype.bindToPlay = function(fn)
 {
     this.play_input.addEventListener("click", fn);
     this.play_input.addEventListener("touchend", fn);
+};
+
+AgentControls.prototype.bindToPause = function(fn)
+{
+    this.pause_input.addEventListener("click", fn);
+    this.pause_input.addEventListener("touchend", fn);
 };

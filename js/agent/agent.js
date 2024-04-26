@@ -11,29 +11,37 @@ function Agent(gameManager)
     this.gameManager = gameManager;
     this.agentControls = new AgentControls;
 
+    // control for continuous play, if true then play is going on
+    this.agentPlaying = false;    
+
+    // set the functionality of the play button
+    this.agentControls.bindToPlayOne(this.playOneMove.bind(this));
+    this.agentControls.bindToPlay(this.startPlay.bind(this));
+    this.agentControls.bindToPause(this.stopPlay.bind(this));
+}
+
+Agent.prototype.startPlay = function ()
+{
+    console.log("Starting continuous play");
+    this.agentPlaying = true;
+    while (this.agentPlaying && !this.gameManager.isGameTerminated()) {
+        this.playOneMove();
+    }
+    console.log("Stopping continuous play");
+}
+
+Agent.prototype.stopPlay = function ()
+{
+    this.agentPlaying = false;
+}
+
+Agent.prototype.playOneMove = function ()
+{
     // add a score to the grid for heuristics purposes
     this.gameManager.grid.score = this.gameManager.score;
 
-    // set the functionality of the play button
-    this.agentControls.bindToPlay(this.doOneMove.bind(this));
-
-    //this.execute();
-}
-
-Agent.prototype.doOneMove = function ()
-{
     var moveChoice = this.chooseMove();
     this.gameManager.move(moveChoice);
-
-    // TODO
-    /*this.gameManager.grid.generateSuccessors()
-        .forEach((s) => {
-            var map = { 0:"Up", 1:"Right", 2:"Down", 3:"Left" };
-            console.log("Move in " + map[s.direction] + " direction gives these scores:"
-                + "\nfree spaces: " + s.h_free_spaces()
-                + "\nscore: " + s.h_score()
-                + "\nmonotonicity: " + s.h_monotonicity());
-        });*/
 };
 
 Agent.prototype.chooseMove = function ()
@@ -55,7 +63,7 @@ Agent.prototype.chooseMinimaxMove = function()
 {
     var depth = this.agentControls.depth();
     console.log("choosing minimax move with depth " + depth);
-    return minimax(this.gameManager.grid, depth);
+    return ab_minimax(this.gameManager.grid, depth);
 };
 
 Agent.prototype.chooseExpectimaxMove = function()

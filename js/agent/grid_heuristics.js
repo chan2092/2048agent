@@ -22,6 +22,7 @@ Grid.prototype.h_free_spaces = function()
 //      32 -> 32 + 16*2 + ~8*4 -> ~3*32
 Grid.prototype.h_score = function()
 {
+    
     var score = 0;
 
     for (var row = 0; row < this.size; row++) {
@@ -34,7 +35,8 @@ Grid.prototype.h_score = function()
         }
     }
     
-    return score / 4096;
+    
+    return score / 10000;
 };
 
 // Encodes quality of value gradient present on board

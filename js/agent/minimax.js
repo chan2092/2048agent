@@ -6,43 +6,39 @@
 // Adapted from pseudocode from:
 //   Artificial Intelligence: a Modern Approach
 //     Stuart Russell, Peter Norvig
-function minimax(state, maxDepth)
+function ab_minimax(state, maxDepth)
 {
-    var res = maxValue(state, maxDepth);
+    var res = ab_maxValue(state, maxDepth, -Infinity, Infinity);
     console.log("Chose move " + res.action + " with value " + res.value);
     return res.action;
 }
-function maxValue(state, depth)
+function ab_maxValue(state, depth, a, b)
 {
     // search for best successor value
-    var v = -Infinity;
-    var a = -1;
+    var val = -Infinity;
+    var act = -1;
 
-    var valueList = []; ////////////////////////////////////////
     state.generateSuccessors().forEach((s2) => {
-        var minRes = minValue(s2, depth);
+        var minRes = ab_minValue(s2, depth, a, b);
 
-        valueList.push(minRes.value); ////////////////////////////////////////////
-
-        if (minRes.value > v) {
-            v = minRes.value;
-            a = s2.direction;
+        if (minRes.value > val) {
+            val = minRes.value;
+            act = s2.direction;
+            a = Math.max(a, val);
         }
+
+        // prune
+        if (val >= b)
+            return { value: val, action: act };
     });
 
     // if terminal max win 100, lose 0
     if (state.over)
-        return { value: (self.won) ? 100 : 0, action: -1 };
+        return { value: (state.won)? 100 : 0, action: -1 };
 
-    /*
-    console.log("MAX HERE, AT DEPTH " + depth
-                + "\nfrom moves with values: " + valueList
-                + "\nchose value: " + v); ////////////////////////////////////////
-    */
-
-    return { value: v, action: a };
+    return { value: val, action: act };
 }
-function minValue(state, depth)
+function ab_minValue(state, depth, a, b)
 {
     // if reached depth here, return heuristic
     if (depth == 0) {
@@ -51,23 +47,22 @@ function minValue(state, depth)
     }
 
     // search for worst (for max) random tile placement
-    var v = Infinity;
-    var a = -1;
-    var valueList = []; //////////////////////////////////////////////
-    state.generateRandomSuccessors().forEach((s2) => {
-        var maxRes = maxValue(s2, depth-1);
-        valueList.push(maxRes.value); ////////////////////////////////
-        if (maxRes.value < v) {
-            v = maxRes.value;
-            a = s2.direction;
-        }
-    });
+    var val = Infinity;
+    var act = -1;
 
-    /*
-    console.log("MIN HERE, AT DEPTH " + depth
-                + "\nfrom moves with values: " + valueList
-                + "\nchose value: " + v); /////////////////////////////
-    */
+    state.generateRandomSuccessors().forEach((s2) => {
+        var maxRes = ab_maxValue(s2, depth-1, a, b);
+        
+        if (maxRes.value < val) {
+            val = maxRes.value;
+            act = s2.direction;
+            b = Math.min(b, val);
+        }
+
+        // prune
+        if (val <= a)
+            return { value: val, action: act };
+    });
    
-    return { value: v, action: a };
+    return { value: val, action: act };
 }
