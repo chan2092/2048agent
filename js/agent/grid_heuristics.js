@@ -6,7 +6,10 @@
 // Combination of all heuristics
 Grid.prototype.h_total = function()
 {
-    return this.h_free_spaces() + this.h_score() + this.h_monotonicity();
+    return 0.4 * this.h_free_spaces()
+        + 0.35 * this.h_monotonicity()
+        + 0.15 * this.h_max_tile()
+        + 0.1 * this.h_score();
 }
 
 // Encodes percentage of spaces on board free
@@ -104,3 +107,12 @@ Grid.prototype.h_monotonicity = function()
 
     return best / 24;
 };
+
+Grid.prototype.h_max_tile = function ()
+{
+    var best = -Infinity;
+    this.eachCell((x, y, c) => {
+        if (c != null && c.value > best) best = c.value;
+    });
+    return best / 2048;
+}

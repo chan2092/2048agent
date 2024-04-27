@@ -18,9 +18,30 @@ function Agent(gameManager)
     this.agentControls.bindToPlayOne(this.playOneMove.bind(this));
     this.agentControls.bindToPlay(this.startPlay.bind(this));
     this.agentControls.bindToPause(this.stopPlay.bind(this));
+
+    // set up the worker
+    this.worker = new Worker("js/agent/agent_worker.js");
+    /*this.worker.onmessage = (event) => {
+        var m = event.data;
+        this.gameManager.move(m);
+    };*/
+    this.worker.onmessage = (event) => {
+        this.gameManager.move(event.data);
+        if (this.agentPlaying && !this.gameManager.isGameTerminated())
+            this.playOneMove();
+        else
+            this.agentPlaying = false;
+    };
 }
 
 Agent.prototype.startPlay = function ()
+{
+    // set the worker's message receiver to keep running
+    this.agentPlaying = true;
+    this.playOneMove();
+}
+
+/*Agent.prototype.startPlay = function ()
 {
     console.log("Starting continuous play");
     this.agentPlaying = true;
@@ -28,7 +49,7 @@ Agent.prototype.startPlay = function ()
         this.playOneMove();
     }
     console.log("Stopping continuous play");
-}
+}*/
 
 Agent.prototype.stopPlay = function ()
 {
@@ -37,16 +58,16 @@ Agent.prototype.stopPlay = function ()
 
 Agent.prototype.playOneMove = function ()
 {
-    // add a score to the grid for heuristics purposes
-    this.gameManager.grid.score = this.gameManager.score;
-
-    var moveChoice = this.chooseMove();
-    this.gameManager.move(moveChoice);
+    this.worker.postMessage({
+        size: this.gameManager.size,
+        cells: this.gameManager.grid.serialize().cells,
+        depth: this.agentControls.depth()
+    });
 };
 
 Agent.prototype.chooseMove = function ()
 {
-    var chooseType = this.agentControls.algorithm();
+    /*var chooseType = this.agentControls.algorithm();
     var move;
 
     if (chooseType === "minimax")
@@ -56,7 +77,17 @@ Agent.prototype.chooseMove = function ()
     else
         move = this.chooseRandomMove();
     
-    return move;
+    return move;*/
+    var depth = this.agentControls.depth();
+    var w = new Worker("js/agent/agent_worker.js");
+    w.postMessage({
+        grid: this.gameManager.grid,
+        depth: depth
+    });
+    w.onmessage = (event) => {
+        console.log("Move received: " + event.data);
+    }
+    return 0;
 };
 
 Agent.prototype.chooseMinimaxMove = function()
