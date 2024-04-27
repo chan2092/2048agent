@@ -35,6 +35,9 @@ Grid.prototype.generateSuccessors = function()
 
 // Generate all possible random tile placements
 // Useful for calculating Min's move in Minimax
+// Successor grids may be expected to have the
+// probability property, which helps calculating
+// expected value in Expectimax.
 Grid.prototype.generateRandomSuccessors = function()
 {
     var s_list = [];
@@ -46,9 +49,11 @@ Grid.prototype.generateRandomSuccessors = function()
 
         var s2_tile = new Tile(cell, 2);
         s2_grid.insertTile(s2_tile);
+        s2_grid.probability = 0.9;
 
         var s4_tile = new Tile(cell, 4);
         s4_grid.insertTile(s4_tile);
+        s4_grid.probability = 0.1;
 
         s_list.push(s2_grid, s4_grid);
     })
