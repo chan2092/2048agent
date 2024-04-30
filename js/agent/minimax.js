@@ -9,7 +9,6 @@
 function ab_minimax(state, maxDepth)
 {
     var res = ab_maxValue(state, maxDepth, -Infinity, Infinity);
-    console.log("Chose move " + res.action + " with value " + res.value);
     return res.action;
 }
 function ab_maxValue(state, depth, a, b)

@@ -15,6 +15,16 @@
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <!-- Stylesheet for the Agent -->
+  <style>
+    #agent-controls-area {
+      background-color: white;
+    }
+    .ah {
+      width: 50%;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -33,25 +43,46 @@
       <!-- Controls for the Agent -->
       <div id="agent-controls-area">
 
-        <label for="agent-algorithm">Search Algorithm:</label>
-        <select id="agent-algorithm">
-          <option value="random">Random Choice</option>
-          <option value="minimax">Minimax</option>
-          <option value="expectimax">Expectimax</option>
-        </select>
-        <br>
+        <h3>Agent Controls</h3>
+        <table>
+          <tr>
+            <th>Search Algorithm</th>
+            <td>
+              <select id="agent-algorithm">
+                <option value="random">Random Choice</option>
+                <option value="minimax">Minimax</option>
+                <option value="expectimax">Expectimax</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>Search Depth</th>
+            <td>
+              <input id="agent-depth" type="range" value="2" min="1" max="4">
+            </td>
+          </tr>
+        </table>
 
-        <label for="agent-depth">Search Depth</label>
-        <input id="agent-depth" type="range" min="1" max="10">
-        <br>
-
-        <p>Search Heuristics</p>
-        <label for="ah-score">Score</label>
-        <input id="ah-score" type="checkbox">
-        <label for="ah-monotonicity">Monotonicity</label>
-        <input id="ah-monotonicity" type="checkbox">
-        <label for="ah-free-spaces">Free Spaces</label>
-        <input id="ah-free-spaces" type="checkbox">
+        <h4>Search Heuristics</h4>
+        <table>
+          <tr>
+            <th>Score</th>
+            <td><input id="ah-score" class="ah" type="number" value="0.25" step="0.05"></td>
+            <th>Monotonicity</th>
+            <td><input id="ah-monotonicity" class="ah" type="number" value="0.2" step="0.05"></td>
+          </tr>
+          <tr>
+            <th>Free Spaces</th>
+            <td><input id="ah-free-spaces" class="ah" type="number" value="0.25" step="0.05"></td>
+            <th>Max Tile</th>
+            <td><input id="ah-max-tile" class="ah" type="number" value="0.05" step="0.05"></td>
+          </tr>
+            <th>Large Tiles on Edges</th>
+            <td><input id="ah-large-cornered" class="ah" type="number" value="0.05" step="0.05"></td>
+            <th>Uniformity</th>
+            <td><input id="ah-uniformity" class="ah" type="number" value="0.2" step="0.05"></td>
+          </tr>
+        </table>
 
         <input id="agent-play-one" type="button" value="Play One Move">
         <input id="agent-play" type="button" value="Play">

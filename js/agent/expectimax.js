@@ -9,7 +9,6 @@
 function expectimax(state, maxDepth)
 {
     var res = playerValue(state, maxDepth);
-    console.log("Chose move " + res.action + " with value " + res.value);
     return res.action;
 }
 

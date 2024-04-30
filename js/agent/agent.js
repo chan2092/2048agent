@@ -44,6 +44,7 @@ Agent.prototype.playOneMove = function ()
         size: this.gameManager.size,
         cells: this.gameManager.grid.serialize().cells,
         depth: this.agentControls.depth(),
-        algorithm: this.agentControls.algorithm()
+        algorithm: this.agentControls.algorithm(),
+        h_weights: this.agentControls.h_weights(),
     });
 };

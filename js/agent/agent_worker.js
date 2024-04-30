@@ -18,6 +18,10 @@ onmessage = function (event) {
     if (event.data.cells && event.data.size && event.data.algorithm) {
         var grid = new Grid(event.data.size, event.data.cells);
         var depth = event.data.depth;
+        var h_weights = event.data.h_weights;
+
+        // set weights for grid heuristics
+        grid_h_weights = h_weights;
 
         // get move according to specified algorithm
         var move;

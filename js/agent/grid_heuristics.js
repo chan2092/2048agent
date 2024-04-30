@@ -3,21 +3,36 @@
  * Heuristics (h_*()) are described here.
  */
 
+// Weights by which heuristics are applied
+var grid_h_weights = {
+    h_free_spaces: 0.25,
+    h_uniformity: 0.2,
+    h_monotonicity: 0.2,
+    h_score: 0.25,
+    h_large_cornered: 0.05,
+    h_max_tile: 0.05,
+};
+
 // Combination of all heuristics
+// weights are modified by the user via AgentControls
+// Each heuristic is escaped so that if their weight
+// is zero, they won't be calculated.
 Grid.prototype.h_total = function()
 {
-    return 0.25 * this.h_free_spaces()
-        + 0.2 * this.h_uniformity()
-        + 0.2 * this.h_monotonicity()
-        + 0.25 * this.h_score()
-        + 0.05 * this.h_large_cornered()
-        + 0.05 * this.h_max_tile();
-        
-
-        /*0.3 * this.h_free_spaces()
-        + 0.3 * this.h_monotonicity()
-        + 0.1 * this.h_max_tile()
-        + 0.3 * this.h_score();*/
+    var score = 0;
+    if (grid_h_weights.h_free_spaces == 0)
+        score += grid_h_weights.h_free_spaces * this.h_free_spaces();
+    if (grid_h_weights.h_uniformity == 0)
+        score += grid_h_weights.h_uniformity * this.h_uniformity();
+    if (grid_h_weights.h_monotonicity == 0)
+        score += grid_h_weights.h_monotonicity * this.h_monotonicity();
+    if (grid_h_weights.h_score == 0)
+        score += grid_h_weights.h_score * this.h_score();
+    if (grid_h_weights.h_large_cornered == 0)
+        score += grid_h_weights.h_large_cornered * this.h_large_cornered();
+    if (grid_h_weights.h_max_tile == 0)
+        score += grid_h_weights.h_max_tile * this.h_max_tile();
+    return score;
 }
 
 // Encodes percentage of spaces on board free
