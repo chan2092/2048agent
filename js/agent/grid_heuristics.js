@@ -6,10 +6,18 @@
 // Combination of all heuristics
 Grid.prototype.h_total = function()
 {
-    return 0.4 * this.h_free_spaces()
-        + 0.35 * this.h_monotonicity()
-        + 0.15 * this.h_max_tile()
-        + 0.1 * this.h_score();
+    return 0.25 * this.h_free_spaces()
+        + 0.2 * this.h_uniformity()
+        + 0.2 * this.h_monotonicity()
+        + 0.25 * this.h_score()
+        + 0.05 * this.h_large_cornered()
+        + 0.05 * this.h_max_tile();
+        
+
+        /*0.3 * this.h_free_spaces()
+        + 0.3 * this.h_monotonicity()
+        + 0.1 * this.h_max_tile()
+        + 0.3 * this.h_score();*/
 }
 
 // Encodes percentage of spaces on board free
@@ -21,7 +29,7 @@ Grid.prototype.h_free_spaces = function()
 // Literal score of the board
 // approximated, can't know if a 4-tile was randomly
 // spawned or made from two 2-tiles
-// Ex.: for a 32-tile, the score must have been...
+// Ex.: for a 32-tile, the score must have been around...
 //      32 -> 32 + 16*2 + ~8*4 -> ~3*32
 Grid.prototype.h_score = function()
 {
@@ -115,4 +123,36 @@ Grid.prototype.h_max_tile = function ()
         if (c != null && c.value > best) best = c.value;
     });
     return best / 2048;
-}
+};
+
+// uniformity as described by Kohler, et al.
+Grid.prototype.h_uniformity = function ()
+{
+    var score = 0;
+    var tileCounts = {};
+    this.eachCell((c) => {
+        if (tileCounts[c.value])
+            tileCounts[c.value]++;
+        else
+            tileCounts[c.value] = 1;
+    });
+    for (var key in tileCounts) {
+        score += Math.pow(tileCounts[key], 3);
+    }
+    return score / 4096;
+};
+
+Grid.prototype.h_large_cornered = function ()
+{
+    var score = 0;
+    this.eachCell((x, y, c) => {
+        if (c != null) {
+            // half of tile value for each of x and y on the edge
+            var tileScore = 0;
+            if (c.x == 0 || c.x == this.size - 1) tileScore += 0.5;
+            if (c.y == 0 || c.y == this.size - 1) tileScore += 0.5;
+            score += c.value * tileScore;
+        }
+    });
+    return score / 1024;
+};

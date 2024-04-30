@@ -34,7 +34,7 @@ function playerValue(state, depth)
             
             // if reached depth or if probability of occurrence
             // is below the threshold, successorValue is heuristic
-            if (depth <= 0 || probability < 0.1)
+            if (depth <= 0 || probability < 0.05)
                 successorValue = s3.h_total();
             // otherwise it continues down the tree
             else 

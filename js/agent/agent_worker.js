@@ -13,6 +13,7 @@ importScripts("expectimax.js");
 
 // wait on messages from the UI thread to start
 var running = false;
+
 onmessage = function (event) {
     if (event.data.cells && event.data.size && event.data.algorithm) {
         var grid = new Grid(event.data.size, event.data.cells);
