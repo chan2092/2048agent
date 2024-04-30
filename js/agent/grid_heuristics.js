@@ -20,17 +20,17 @@ var grid_h_weights = {
 Grid.prototype.h_total = function()
 {
     var score = 0;
-    if (grid_h_weights.h_free_spaces == 0)
+    if (grid_h_weights.h_free_spaces != 0)
         score += grid_h_weights.h_free_spaces * this.h_free_spaces();
-    if (grid_h_weights.h_uniformity == 0)
+    if (grid_h_weights.h_uniformity != 0)
         score += grid_h_weights.h_uniformity * this.h_uniformity();
-    if (grid_h_weights.h_monotonicity == 0)
+    if (grid_h_weights.h_monotonicity != 0)
         score += grid_h_weights.h_monotonicity * this.h_monotonicity();
-    if (grid_h_weights.h_score == 0)
+    if (grid_h_weights.h_score != 0)
         score += grid_h_weights.h_score * this.h_score();
-    if (grid_h_weights.h_large_cornered == 0)
+    if (grid_h_weights.h_large_cornered != 0)
         score += grid_h_weights.h_large_cornered * this.h_large_cornered();
-    if (grid_h_weights.h_max_tile == 0)
+    if (grid_h_weights.h_max_tile != 0)
         score += grid_h_weights.h_max_tile * this.h_max_tile();
     return score;
 }
