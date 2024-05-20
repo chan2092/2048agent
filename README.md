@@ -20,8 +20,11 @@ heuristics, and depth levels. The following are included:
 #### Heuristics
 
 - Game Score
-- Board Monotonicity
 - Free Spaces on Board
+- Greatest Tile Value
+- Large Tile Values on Edges
+- Board Monotonicity
+- Board Uniformity
 
 ## License
 2048 is licensed under the [MIT license](https://github.com/gabrielecirulli/2048/blob/master/LICENSE.txt).
